@@ -24,6 +24,7 @@ Imports:
     magrittr,
     readr,
     RJDemetra,
+    scales,
     stats,
     stringr,
     tibble,
