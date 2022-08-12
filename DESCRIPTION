@@ -17,6 +17,7 @@ Config/testthat/edition: 3
 Imports: 
     dplyr,
     dynfactoR,
+    egg,
     eurostat,
     expm,
     ggplot2,
