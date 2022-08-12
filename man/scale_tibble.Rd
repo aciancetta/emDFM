@@ -10,9 +10,10 @@ scale_tibble(d_tibble)
 \item{d_tibble}{A tibble of time series having dates as the first column}
 }
 \value{
-A list containing the scaled tibble as the first element. The second element
-is a list containing the vector of column means and standard deviations of the
-original tibble.
+A list:
+\item{\code{scaled_tibble}}{Tibble of the scaled data}
+\item{\code{scale_attributes}}{A list containing the vector of column means and standard deviations of the
+original tibble.}
 }
 \description{
 Scale data in a tibble, excluding the first column
