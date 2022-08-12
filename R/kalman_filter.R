@@ -5,12 +5,12 @@
 #'
 #' @return A list of parameters:
 #' \item{`factors`}{A matrix of estimated factors}
-#' \item{`P_list`}{Estimated variance of the forecasts in Kalman filter update}
-#' \item{`F_prediction_list`}{Predicted factors in the Kalman filter update}
-#' \item{`P_prediction_list`}{Predicted variance of the forecasts in Kalman filter update}
+#' \item{`P_list`}{List of estimated variance of the forecasts in Kalman filter update}
+#' \item{`F_prediction_list`}{List of predicted factors in the Kalman filter update}
+#' \item{`P_prediction_list`}{List of predicted variance of the forecasts in Kalman filter update}
 #' \item{`parameters`}{A list containing the parameters of the model.
-  #' `Lambda` is the matrix of loadings; `A` is the list of the matrices of the autoregressive parameters at each lag;
-  #' `p` is the autoregressive order of the state equation; `Gamma_eta` is the covariance matrix of the innovations in the state equation}
+#' `Lambda` is the matrix of loadings; `A` is the list of the matrices of the autoregressive parameters at each lag;
+#' `p` is the autoregressive order of the state equation; `Gamma_eta` is the covariance matrix of the innovations in the state equation}
 #' @export
 #'
 #' @examples

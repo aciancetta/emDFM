@@ -14,9 +14,9 @@ kalman_filter(d, parameters)
 \value{
 A list of parameters:
 \item{\code{factors}}{A matrix of estimated factors}
-\item{\code{P_list}}{Estimated variance of the forecasts in Kalman filter update}
-\item{\code{F_prediction_list}}{Predicted factors in the Kalman filter update}
-\item{\code{P_prediction_list}}{Predicted variance of the forecasts in Kalman filter update}
+\item{\code{P_list}}{List of estimated variance of the forecasts in Kalman filter update}
+\item{\code{F_prediction_list}}{List of predicted factors in the Kalman filter update}
+\item{\code{P_prediction_list}}{List of predicted variance of the forecasts in Kalman filter update}
 \item{\code{parameters}}{A list containing the parameters of the model.
 \code{Lambda} is the matrix of loadings; \code{A} is the list of the matrices of the autoregressive parameters at each lag;
 \code{p} is the autoregressive order of the state equation; \code{Gamma_eta} is the covariance matrix of the innovations in the state equation}
