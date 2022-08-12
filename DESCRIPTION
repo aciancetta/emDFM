@@ -18,6 +18,7 @@ Imports:
     dplyr,
     eurostat,
     expm,
+    ggplot2,
     lubridate,
     magrittr,
     readr,

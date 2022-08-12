@@ -20,7 +20,7 @@
 #' @export
 #'
 #' @examples
-#' # d <- download_clean_data()
+#' # d <- download_clean_data("IT")
 #' # em_fit <- em_algorithm(d)
 #' # em_fit$factors
 #'
