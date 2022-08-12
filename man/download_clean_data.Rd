@@ -21,6 +21,6 @@ the series stationary. The first tibble contains the high-frequency GMI, while t
 second tibble reports the indexes aggregated to have monthly frequency.
 }
 \examples{
-country_code <- "IT"
-data <- download_clean_data(country_code)
+#country_code <- "IT"
+#data <- download_clean_data(country_code)
 }

@@ -17,8 +17,8 @@
 #' @export
 #'
 #' @examples
-#' country_code <- "IT"
-#' data <- download_clean_data(country_code)
+#' #country_code <- "IT"
+#' #data <- download_clean_data(country_code)
 
 download_clean_data <- function(geo_code){
 

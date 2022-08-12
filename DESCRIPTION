@@ -17,12 +17,16 @@ Config/testthat/edition: 3
 Imports: 
     dplyr,
     eurostat,
+    expm,
     lubridate,
     magrittr,
     readr,
+    RJDemetra,
+    stats,
     stringr,
     tibble,
     tidyr,
     tidyselect,
     timeDate,
-    utils
+    utils,
+    vars
