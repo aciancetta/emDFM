@@ -26,7 +26,8 @@ devtools::install_github("aciancetta/emDFM")
 ``` r
 library(emDFM)
 ## Download Italian time series from Eurostat and Google
-d <- download_clean_data("IT")
+data <- download_clean_data("IT")
+d <- data$data_high_freq
 scale_fit <- scale_tibble(d)
 d_scaled <- scale_fit$scaled_tibble
 d_scaled_imputed <- scale_impute(data)
