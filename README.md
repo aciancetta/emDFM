@@ -24,19 +24,30 @@ devtools::install_github("aciancetta/emDFM")
 ## Example
 
 ``` r
+# devtools::install_github("aciancetta/emDFM")
 library(emDFM)
-## Download Italian time series from Eurostat and Google
+
+## Download Italian time-series data from Eurostat and Google (already stationary)
 data <- download_clean_data("IT")
 d <- data$data_high_freq
+
+## Scale the data
 scale_fit <- scale_tibble(d)
 d_scaled <- scale_fit$scaled_tibble
-d_scaled_imputed <- scale_impute(data)
 
+## PCA
+d_scaled_imputed <- scale_impute(d, r = 8, thresh = 0.02)
 pc_fit <- pca_estimator(d_scaled_imputed, r = 4, p = 1)
+
+## Kalman filter
 param_list <- initialize_filter(pc_fit)
-kf_fit <- kalman_filter(d, param_list)
+kf_fit <- kalman_filter(d_scaled, param_list)
+
+## Kalman smoother
 ks_fit <- kalman_smoother(kf_fit)
-em_fit <- em_algorithm(d, r = 4, p = 1)
+
+## EM algorithm
+em_fit <- em_algorithm(d_scaled)
 
 
 # Plot forecasts
