@@ -40,7 +40,6 @@ forecast_pipeline <- function(dataset, forecast_input){
   scaled_list <- scale_tibble(dataset)
   scale_attributes <- scaled_list$scale_attributes
   d_scaled <- scaled_list$scaled_tibble
-  d_imputed <- scale_impute(dataset, r = r, thresh = thresh_imputation)
 
   if(estimator == "EM"){
     obj_fit <- em_algorithm(d_scaled,
@@ -49,6 +48,7 @@ forecast_pipeline <- function(dataset, forecast_input){
                             show_plots = FALSE)
 
   } else if (estimator %in% c("PCA", "KF", "KS")){
+    d_imputed <- scale_impute(dataset, r = r, thresh = thresh_imputation)
     obj_fit <- pca_estimator(d = d_imputed, r = r, p = p)
   }
   # } else {
