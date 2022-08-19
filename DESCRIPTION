@@ -1,5 +1,5 @@
 Package: emDFM
-Title: What the Package Does (One Line, Title Case)
+Title: Dynamic Factor Model: estimation and forecast evaluation using the EM algorithm
 Version: 0.0.0.9001
 Authors@R: 
     person("Alessandro", "Ciancetta", , "alessandro.ciancetta@gmail.com", role = c("aut", "cre"),
