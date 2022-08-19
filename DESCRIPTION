@@ -2,9 +2,11 @@ Package: emDFM
 Title: What the Package Does (One Line, Title Case)
 Version: 0.0.0.9001
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    person("Alessandro", "Ciancetta", , "alessandro.ciancetta@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "https://orcid.org/0000-0002-9783-5551"))
+Description: The goal of emDFM is to provide an easy tool for estimation of the dynamic factor model.
+The package allows to estimate the model using PCA, the Kalman filter or the Expectation Maximization algorithm. 
+Moreover, it provides useful functions for forecast evaluation and visualization.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
