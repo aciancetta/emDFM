@@ -2,36 +2,55 @@
 % Please edit documentation in R/forecast_evaluation_aux.R
 \name{forecast_evaluation_aux}
 \alias{forecast_evaluation_aux}
-\title{Wrapper for forecast evaluation}
+\title{Perform rolling-window out-of-sample forecast evaluation of the DFM}
 \usage{
-forecast_evaluation_aux(type, evaluation_input)
+forecast_evaluation_aux(
+  d,
+  horizon = 1,
+  window_size = 376,
+  r = 4,
+  p = 1,
+  thresh = 0.01,
+  thresh_imputation = 0.05,
+  type = c("EM", "PCA", "KF", "KS", "package_test")
+)
 }
 \arguments{
-\item{type}{String to choose the algorithm. Either "PCA", "KF", "KS", "EM"}
+\item{d}{A tibble of time series, with dates in the first column.}
 
-\item{evaluation_input}{A list}
+\item{horizon}{An integer. Number of steps-ahead of the forecast. Default is 1.}
+
+\item{window_size}{An integer. Number of observations in the sliding window at each step.}
+
+\item{r}{An integer. Number of factors to estimate.}
+
+\item{p}{An integer. Autoregressive order of the state equation.}
+
+\item{thresh}{A double. Threshold for convergence of the EM algorithm.}
+
+\item{thresh_imputation}{A double. Threshold for the imputation of missing values (for algorithm initialization).}
+
+\item{type}{A string defining the algorithm for estimation. It must be either "EM", "PCA", "KF", "KS". Also, for
+initial development, a "package_test" option is available to compare the results with those from the \code{dynfactoR}
+package. This option will be likely be deprecated in future releases.}
 }
 \value{
-See \code{forecast_evaluation}
+A list. The first element is a tibble containing, for each element in the test set,
+the forecasted value, the ground truth and the forecast error. The second element contains the RMSE for each
+variable in the dataset
 }
 \description{
-Wrapper for forecast evaluation
+\code{forecast_evaluation} automatizes the process of forecast evaluation of the DFM.
+It takes in input a tibble of time series and automatically performs a rolling-window
+out-of-sample forecast evaluation of the model using the chosen estimation algorithm.
 }
 \examples{
 # d <- download_clean_data("IT")
-# evaluation_input <- list(d = d,
-#                          horizon = 1,
-#                          window_size = 300
-#                          r = 4,
-#                          p = 1,
-#                          thresh_imputation = 0.2,
-#                          thresh = 0.01                 # L1 convergence of parameters in EM
-#                          )
-#
-# forecast_eval <- forecast_evaluation_aux("EM", evaluation_input)
-# plot_forecast_evaluation(forecast_eval)
+# forecast_evaluation(d, horizon = 1, window_size = 300, type = "EM")
+
+
 
 }
 \seealso{
-\code{forecast_evaluation}
+\code{dynfactoR} package: https://github.com/guilbran/dynfactoR
 }

@@ -43,7 +43,10 @@ forecast_pipeline <- function(dataset, forecast_input){
   d_imputed <- scale_impute(dataset, r = r, thresh = thresh_imputation)
 
   if(estimator == "EM"){
-    obj_fit <- em_algorithm(d_scaled, thresh = thresh, show_plots = FALSE)
+    obj_fit <- em_algorithm(d_scaled,
+                            thresh_imputation = thresh_imputation,
+                            thresh = thresh,
+                            show_plots = FALSE)
 
   } else if (estimator %in% c("PCA", "KF", "KS")){
     obj_fit <- pca_estimator(d = d_imputed, r = r, p = p)
@@ -66,7 +69,9 @@ forecast_pipeline <- function(dataset, forecast_input){
     obj_fit <- dfm_to_fit(dfm_res)
   }
 
-  plot_forecast(d_scaled, obj_fit, variable = variable, max_horizon = horizon,
+  plot_forecast(d = d_scaled,
+                obj_fit = obj_fit,
+                variable = variable, max_horizon = horizon,
                 scale_attributes = scale_attributes,
                 seasonal_attributes_indpro = seasonal_attributes_indpro
   )

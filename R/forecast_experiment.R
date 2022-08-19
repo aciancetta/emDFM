@@ -32,22 +32,22 @@ forecast_experiment <- function(evaluation_input,
   message("\n\n=======================================")
   message("Starting PCA estimation")
   message("=======================================\n")
-  forecast_eval_PCA <- forecast_evaluation_aux(type = "PCA", evaluation_input)
+  forecast_eval_PCA <- forecast_evaluation(type = "PCA", evaluation_input)
 
   message("\n\n=======================================")
   message("Starting KF estimation")
   message("=======================================\n")
-  forecast_eval_KF <- forecast_evaluation_aux(type = "KF", evaluation_input)
+  forecast_eval_KF <- forecast_evaluation(type = "KF", evaluation_input)
 
   message("\n\n=======================================")
   message("Starting KS estimation")
   message("=======================================\n")
-  forecast_eval_KS <- forecast_evaluation_aux(type = "KS", evaluation_input)
+  forecast_eval_KS <- forecast_evaluation(type = "KS", evaluation_input)
 
   message("\n\n=======================================")
   message("Starting EM estimation")
   message("=======================================\n")
-  forecast_eval_EM <- forecast_evaluation_aux(type = "EM", evaluation_input)
+  forecast_eval_EM <- forecast_evaluation(type = "EM", evaluation_input)
 
   plot_f_pca_dfm_levels <- plot_forecast_evaluation(forecast_eval_PCA, variable = plot_variable, title = paste0("PCA, ", evaluation_input$horizon, "-step ahead forecast"))
   plot_f_kf_dfm_levels <- plot_forecast_evaluation(forecast_eval_KF, variable = plot_variable, title = paste0("KF, ", evaluation_input$horizon, "-step ahead forecast"))
