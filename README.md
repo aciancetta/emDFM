@@ -133,3 +133,10 @@ param_list <- initialize_filter(pc_fit)
 em_eval <- forecast_evaluation(type = "EM", evaluation_input)
 plot_forecast_evaluation(em_eval)
 ```
+
+
+# Credits
+
+The package and the app have been developed as part of an internship at
+[IRPET](http://www.irpet.it/) (Regional Institute for Economic Planning
+of Tuscany).
