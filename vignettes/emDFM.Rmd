@@ -1,0 +1,125 @@
+---
+title: "emDFM"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{emDFM}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+# devtools::install_github("aciancetta/emDFM")
+library(emDFM)
+```
+
+```{r message=FALSE, warning=FALSE}
+## Download data
+data <- download_clean_data("IT")
+```
+
+
+```{r}
+## Consider data with GMI
+d <- data$data_high_freq
+
+## Subset the variables
+d_demo <- d %>%
+  dplyr::select(
+    -gdp_SCA, -consumption_SCA, -exports_SCA, -imports_SCA, -gross_capital_formation_SCA,
+    -tidyselect::starts_with("mobility_transit"),
+    -tidyselect::starts_with("mobility_retail"))
+
+## keep only pbservations where indpro is available for evaluating the forecasts
+d_demo <- d_demo[-c(390:nrow(d_demo)),]
+```
+
+
+
+
+```{r}
+## PCA
+scale_fit <- scale_tibble(d_demo)
+d_scaled <- scale_fit$scaled_tibble
+d_scaled_imputed <- scale_impute(d_demo)
+pc_fit <- pca_estimator(d_scaled_imputed, r = 4, p = 1)
+
+## Kalman filter
+param_list <- initialize_filter(pc_fit)
+kf_fit <- kalman_filter(d_scaled, param_list)
+plot.ts(kf_fit$factors)
+
+## Kalman smoother
+ks_fit <- kalman_smoother(kf_fit)
+
+## EM
+em_fit <- em_algorithm(d_scaled, r = 4, p = 1)
+```
+
+
+```{r}
+## forecast
+forecast_input <- list(
+  estimator = "EM",
+  variable = "indpro_SCA",
+  horizon = 6,
+  r = 4,
+  p = 1,
+  thresh = 1,
+  thresh_imputation = 0.05)
+
+prova <- forecast_pipeline(d_demo, forecast_input)
+prova
+```
+
+
+```{r}
+# Forecast evaluation
+evaluation_input <- list(d = d_scaled_imputed,
+                         horizon = 1,
+                         window_size = 368,
+                         r = 4,
+                         p = 3,
+                         thresh_imputation = 0.1, #0.05,
+                         thresh = 0.1#0.01
+)
+
+pc_eval <- forecast_evaluation(type = "KF", evaluation_input)
+plot_forecast_evaluation(pc_eval)
+```
+```{r}
+## Without GMI
+evaluation_input$d <- d_scaled_imputed %>% dplyr::select(-tidyselect::starts_with("mobility"))
+pc_eval <- forecast_evaluation(type = "KF", evaluation_input)
+plot_forecast_evaluation(pc_eval)
+```
+
+
+```{r}
+r_grid <- c(2,4,6)
+p_grid <- c(1,3,6,9,12)
+eval_list <- list()
+counter <- 0
+for(r in r_grid){
+  for(p in p_grid){
+    counter <- counter+1
+    cat("\nr = ", r, "; p = ", p)
+    evaluation_input$r <- r
+    evaluation_input$p <- p
+    eval_list[[counter]] <- forecast_evaluation(type = "EM", evaluation_input)
+  }
+}
+lapply(eval_list, plot_forecast_evaluation)
+
+# r6p9, r6p1
+# r4p6
+
+
+```
+

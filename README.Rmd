@@ -109,3 +109,6 @@ em_eval <- forecast_evaluation(type = "EM", evaluation_input)
 plot_forecast_evaluation(em_eval)
 ```
 
+
+# Credits
+This package has been developed during my internship at [IRPET](http://www.irpet.it/) (Regional Institute for Economic Planning of Tuscany).

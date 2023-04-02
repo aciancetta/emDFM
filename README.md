@@ -9,30 +9,15 @@
 The goal of `emDFM` is to provide an easy tool for estimation of the
 dynamic factor model:
 
-![
-\\begin{aligned}
-x_t &= \\Lambda f_t + \\xi_t \\\\
-f_t &= A_1 f\_{t-1} + \\dots + A_p f\_{t-p} + \\eta_t,
-\\end{aligned}
-](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%0A%5Cbegin%7Baligned%7D%0Ax_t%20%26%3D%20%5CLambda%20f_t%20%2B%20%5Cxi_t%20%5C%5C%0Af_t%20%26%3D%20A_1%20f_%7Bt-1%7D%20%2B%20%5Cdots%20%2B%20A_p%20f_%7Bt-p%7D%20%2B%20%5Ceta_t%2C%0A%5Cend%7Baligned%7D%0A "
+$$
 \begin{aligned}
 x_t &= \Lambda f_t + \xi_t \\
 f_t &= A_1 f_{t-1} + \dots + A_p f_{t-p} + \eta_t,
 \end{aligned}
-")
+$$
 
-where
-![x_t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;x_t "x_t")
-is time
-![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t")
-observation of the
-![N](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;N "N")
-series and
-![f_t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f_t "f_t")
-is a
-![r](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;r "r")-dimensional
-factor with
-![r\<\<p](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;r%3C%3Cp "r<<p").
+where $x_t$ is time $t$ observation of the $N$ series and $f_t$ is a
+$r$-dimensional factor with $r<<p$.
 
 The package allows to estimate the model using PCA, the Kalman filter or
 the Expectation Maximization algorithm. Moreover, it provides useful
@@ -133,3 +118,9 @@ param_list <- initialize_filter(pc_fit)
 em_eval <- forecast_evaluation(type = "EM", evaluation_input)
 plot_forecast_evaluation(em_eval)
 ```
+
+# Credits
+
+This package has been developed during my internship at
+[IRPET](http://www.irpet.it/) (Regional Institute for Economic Planning
+of Tuscany).

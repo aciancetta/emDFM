@@ -25,7 +25,7 @@
 #' # em_fit$factors
 #'
 em_algorithm <- function(d, r = 4, p = 1,
-                         thresh = 0.01, thresh_imputation = 0.01,
+                         thresh = 0.1, thresh_imputation = 0.01,
                          show_plots = FALSE, max_iter = 30) {
   message("Initialization of the missing values for PCA. Distance must reach ",
           thresh_imputation, "\n")
@@ -43,6 +43,7 @@ em_algorithm <- function(d, r = 4, p = 1,
   theta_update <- unlist(param_list[1:4])
 
   if(show_plots){
+    stats::plot.ts(pc_fit$factors, main = "PCA factors")
     stats::plot.ts(ks_fit$factors, main = "Kalman smoother factors")
   }
 
@@ -56,10 +57,12 @@ em_algorithm <- function(d, r = 4, p = 1,
     Ftt <- ks_fit$factors
     Ftt <- build_companion_F(Ftt, p)
     # 0) define relevant quantities
-    E_FF1 <- 0
+    # E_FF1 <- 0
+    E_FF1 <- cov(Ftt[2:nrow(Ftt),], Ftt[1:(nrow(Ftt)-1),])
     E_F1F1 <- 0
     x_t <- x[1,]
     x_t[is.na(x_t)] <- 0
+
     E_xF <- x_t %*% t(Ftt[1,])
     E_FF <- Ftt[1,] %*% t(Ftt[1,]) + P_list[[1]]
     E_xx <- x_t %*% t(x_t)
@@ -85,8 +88,15 @@ em_algorithm <- function(d, r = 4, p = 1,
 
     # 3) update vcov matrices of measureament and state innovations with
     # estimated covariance of the residuals
+
+    E_err_cov <- 0
+    for(t in 1:t_max){
+      E_err_cov <- E_err_cov + (Ftt[2,] - A_update*Ftt[1,]) %*% t(Ftt[2,] - A_update*Ftt[1,])
+    }
+
     Gamma_csi_update <- diag(diag( E_xx - Lambda_update %*% t(E_xF) ))/(t_max-1)
-    Gamma_eta_update <- (E_FF_b - A_update %*% E_FF1)/(t_max-1)
+    # Gamma_eta_update <- (E_FF_b - A_update %*% E_FF1)/(t_max-1)
+    Gamma_eta_update <- E_err_cov/t_max
 
 
     param_list$Lambda <- Lambda_update[,1:r]
@@ -94,6 +104,7 @@ em_algorithm <- function(d, r = 4, p = 1,
     for(i in 1:p){
       A_list_update[[i]] <- A_update[1:r, (r*(i-1)+1):(r*i)]
     }
+    param_list$A <- A_list_update
     param_list$Gamma_csi <- Gamma_csi_update
     param_list$Gamma_eta <- Gamma_eta_update[1:r, 1:r]
     param_list$F0 <- Ftt[,1:r]
@@ -128,3 +139,4 @@ em_algorithm <- function(d, r = 4, p = 1,
          parameters = param_list)
   )
 }
+

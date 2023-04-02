@@ -41,6 +41,7 @@ kalman_filter <- function(d, parameters){
 
   ## REVISION
   P11 <- diag(1000, ncol(A))
+  # P11 <- G; P11[1:r, 1:r] <- Gamma_eta
   # P11 <- matrix(ginv(kronecker(A, A)) %*% as.numeric(G),
   #                 ncol = r * p, nrow = r * p)
 
@@ -50,6 +51,7 @@ kalman_filter <- function(d, parameters){
   P_list[[1]] <- P11
 
   Ftt <- matrix(0, nrow(x_NAs), r*p)
+
   ## Recursion
   for(t in 1:nrow(d)){
 

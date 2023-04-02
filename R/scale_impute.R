@@ -20,7 +20,7 @@
 #' @examples
 #' # scale_impute(d)
 #'
-scale_impute <- function(d, r = 4, thresh = 0.01) {
+scale_impute <- function(d, r = 8, thresh = 0.01) {
   n_var <- ncol(d)-1
   d <- outliers_to_missing(d)
   d_scaled <- scale(d[,-1])
@@ -44,12 +44,12 @@ scale_impute <- function(d, r = 4, thresh = 0.01) {
     reconstruction <- pc %*% t(loadings)
     d_imputed[na_idx] <- reconstruction[na_idx]
 
-    distance <- norm(pc - pc_old, type = "1")
+    distance <- norm(pc - pc_old, type = "F")
     message("\rDistance is: ", round(distance/n_var, 3), appendLF = FALSE)
     if(distance/n_var < thresh){
       converged <- TRUE
     }
-    mean((d_imputed - pc %*% t(loadings))^2)
+    # mean((d_imputed - pc %*% t(loadings))^2)
   }
 
   d_imputed_tibble <- d %>%
