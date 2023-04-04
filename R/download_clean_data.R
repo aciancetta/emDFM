@@ -20,7 +20,7 @@
 #' #country_code <- "IT"
 #' #data <- download_clean_data(country_code)
 
-download_clean_data <- function(geo_code){
+download_clean_data <- function(geo_code, update_cache = F){
 
   AIM <- BS_CSMCI_BAL <- BS_ESI_I <- BS_ICI_BAL <- EXP <- FC_IND_C0100 <- FC_IND_C0200 <- GID_CAL_C0100 <- GID_CAL_C0200 <- GID_CAL_O4652 <- GID_CAL_O4671 <- GID_CAL_O4680 <- IC_OBS <- IMP_O4100_TOT <- TI_EHG_MAP <- gas_supply <- gdp_SCA <- geo <- gross_capital_formation_SCA <- indic <- is_holiday <- month <- nrg_bal <- petroleum_supply <- siec <- solid_fossil_supply <- time <- unit <- values <- year <- NULL
 
@@ -30,7 +30,8 @@ download_clean_data <- function(geo_code){
                               filters = list(na_item = "B1GQ",
                                              s_adj = "SCA",
                                              unit = "CLV10_MEUR",
-                                             geo = geo_code))
+                                             geo = geo_code),
+                              update_cache = update_cache)
 
   eurostat_gdp <- namq_10_gdp %>%
     dplyr::mutate(time = lubridate::yq(time)) %>%
@@ -43,7 +44,8 @@ download_clean_data <- function(geo_code){
                                        filters = list(na_item = "P3",
                                                       s_adj = "SCA",
                                                       unit = "CLV10_MEUR",
-                                                      geo = geo_code)) %>%
+                                                      geo = geo_code),
+                                       update_cache = update_cache) %>%
     dplyr::mutate(time = lubridate::yq(time)) %>%
     dplyr::select(date = time, consumption_SCA = values)
 
@@ -53,7 +55,8 @@ download_clean_data <- function(geo_code){
                                                    filters = list(na_item = "P5G",
                                                                   s_adj = "SCA",
                                                                   unit = "CLV10_MEUR",
-                                                                  geo = geo_code)) %>%
+                                                                  geo = geo_code),
+                                                   update_cache = update_cache) %>%
     dplyr::mutate(time = lubridate::yq(time)) %>%
     dplyr::select(date = time, gross_capital_formation_SCA = values)
 
@@ -64,7 +67,8 @@ download_clean_data <- function(geo_code){
                                    filters = list(na_item = "P6",
                                                   s_adj = "SCA",
                                                   unit = "CLV10_MEUR",
-                                                  geo = geo_code)) %>%
+                                                  geo = geo_code),
+                                   update_cache = update_cache) %>%
     dplyr::mutate(time = lubridate::yq(time)) %>%
     dplyr::select(date = time, exports_SCA = values)
 
@@ -74,7 +78,8 @@ download_clean_data <- function(geo_code){
                                    filters = list(na_item = "P7",
                                                   s_adj = "SCA",
                                                   unit = "CLV10_MEUR",
-                                                  geo = geo_code)) %>%
+                                                  geo = geo_code),
+                                   update_cache = update_cache) %>%
     dplyr::mutate(time = lubridate::yq(time)) %>%
     dplyr::select(date = time, imports_SCA = values)
 
@@ -85,7 +90,8 @@ download_clean_data <- function(geo_code){
                                   filters = list(geo = geo_code,
                                                  s_adj = "SCA",
                                                  unit = "I15",
-                                                 nace_r2 = "C")) %>%
+                                                 nace_r2 = "C"),
+                                  update_cache = update_cache) %>%
     dplyr::mutate(time = lubridate::ym(time)) %>%
     dplyr::select(date = time, indpro_SCA = values)
 
@@ -94,7 +100,8 @@ download_clean_data <- function(geo_code){
   eurostat_hicp <- eurostat::get_eurostat("prc_hicp_midx",
                                 filters = list(geo = geo_code,
                                                unit = "I15",
-                                               coicop = "CP00")) %>%
+                                               coicop = "CP00"),
+                                update_cache = update_cache) %>%
     dplyr::mutate(time = lubridate::ym(time)) %>%
     dplyr::select(date = time, hicp = values)
 
@@ -102,7 +109,8 @@ download_clean_data <- function(geo_code){
                                         filters = list(geo = geo_code,
                                                        unit = "I15",
                                                        indic_bt = "IMPR",
-                                                       cpa2_1 = "CPA_B-D")) %>%
+                                                       cpa2_1 = "CPA_B-D"),
+                                        update_cache = update_cache) %>%
                                                        # nace_r2 = "B-D")) %>%
     dplyr::mutate(time = lubridate::ym(time)) %>%
     dplyr::select(date = time, import_price_industry = values)
@@ -111,7 +119,8 @@ download_clean_data <- function(geo_code){
   ## EMU ----
   cat("\n-------------Download EMU---------------------")
   eurostat_emu <- eurostat::get_eurostat("irt_lt_mcby_m",
-                               filters = list(geo = geo_code)) %>%
+                               filters = list(geo = geo_code),
+                               update_cache = update_cache) %>%
     dplyr::mutate(time = lubridate::ym(time)) %>%
     dplyr::select(date = time, emu = values)
 
@@ -123,7 +132,8 @@ download_clean_data <- function(geo_code){
   ## Fossils
   cat("\n-------------Download Supply solid fossil---------------------")
   nrg_cb_sffm <- eurostat::get_eurostat("nrg_cb_sffm",
-                              filters = list(geo = geo_code))#)#,
+                              filters = list(geo = geo_code),
+                              update_cache = update_cache)#)#,
   # nrg_bal = c("GID_CAL", "FC_IND"),
   # siec = c("C0100", "C0200")))
   eurostat_supply_solid_fossil<- nrg_cb_sffm %>%
@@ -140,7 +150,8 @@ download_clean_data <- function(geo_code){
   ## Oil supply ----
   cat("\n-------------Download Oil supply---------------------")
   nrg_cb_oilm <- eurostat::get_eurostat("nrg_cb_oilm",
-                                        filters = list(geo=geo_code))
+                                        filters = list(geo=geo_code),
+                                        update_cache = update_cache)
 
   eurostat_supply_oil <- nrg_cb_oilm %>%
     dplyr::mutate(time = lubridate::ym(time)) %>%
@@ -155,7 +166,8 @@ download_clean_data <- function(geo_code){
   ## Gas supply ----
   cat("\n-------------Download Gas supply---------------------")
   nrg_cb_gasm <- eurostat::get_eurostat("nrg_cb_gasm",
-                              filters = list(geo = geo_code))
+                              filters = list(geo = geo_code),
+                              update_cache = update_cache)
   eurostat_supply_gas <- nrg_cb_gasm %>%
     dplyr::mutate(time = lubridate::ym(time)) %>%
     dplyr::filter(unit == "MIO_M3") %>%  # milion cubic meters
@@ -169,7 +181,8 @@ download_clean_data <- function(geo_code){
   ## Electricity ----
   cat("\n-------------Download electricity---------------------")
   nrg_cb_em <- eurostat::get_eurostat("nrg_cb_em",
-                            filters = list(geo = geo_code))
+                            filters = list(geo = geo_code),
+                            update_cache = update_cache)
   eurostat_supply_electricity<- nrg_cb_em %>%
     dplyr::mutate(time = lubridate::ym(time)) %>%
     dplyr::filter(unit == "GWH") %>%  # milion cubic meters
@@ -184,7 +197,8 @@ download_clean_data <- function(geo_code){
   cat("\n-------------Download confidence (2 indicators)---------------------")
   ei_bssi_m_r2 <- eurostat::get_eurostat("ei_bssi_m_r2",
                                filters = list(geo = geo_code,
-                                              s_adj = "SA"))
+                                              s_adj = "SA"),
+                               update_cache = update_cache)
   eurostat_confidence <- ei_bssi_m_r2 %>%
     dplyr::mutate(time = lubridate::ym(time)) %>%
     dplyr::select(date = time, values, indic) %>%
@@ -194,7 +208,8 @@ download_clean_data <- function(geo_code){
 
   ei_bsrt_m_r2 <- eurostat::get_eurostat("ei_bsrt_m_r2",
                                filters = list(geo = geo_code,
-                                              s_adj = "SA"))
+                                              s_adj = "SA"),
+                               update_cache = update_cache)
 
   eurostat_confidence <- ei_bsrt_m_r2 %>%
     dplyr::mutate(time = lubridate::ym(time)) %>%
@@ -217,7 +232,8 @@ download_clean_data <- function(geo_code){
                                              bop_item = "FA",
                                              stk_flow = "NET",
                                              partner = "WRL_REST"
-                              ))
+                              ),
+                              update_cache = update_cache)
 
   eurostat_financial_account <- ei_bpm6fa_m %>%
     dplyr::mutate(time = lubridate::ym(time)) %>%
@@ -229,7 +245,8 @@ download_clean_data <- function(geo_code){
                                              bop_item = "CA",
                                              stk_flow = "BAL",
                                              partner = "WRL_REST"
-                              ))
+                              ),
+                              update_cache = update_cache)
 
   eurostat_current_account <- ei_bpm6ca_m %>%
     dplyr::mutate(time = lubridate::ym(time)) %>%
@@ -243,7 +260,8 @@ download_clean_data <- function(geo_code){
                                             s_adj = "SCA",
                                             unit = "I15",
                                             nace_r2 = "B_C"
-                             ))
+                             ),
+                             update_cache = update_cache)
 
   eurostat_turnover_industry <- sts_intv_m %>%
     dplyr::mutate(time = lubridate::ym(time)) %>%
@@ -269,7 +287,8 @@ download_clean_data <- function(geo_code){
                                           sex = "T",
                                           unit = "PC_ACT",
                                           age = "TOTAL"
-                           ))
+                           ),
+                           update_cache = update_cache)
 
   eurostat_unemployment <- une_rt_m %>%
     dplyr::mutate(time = lubridate::ym(time)) %>%
@@ -283,7 +302,8 @@ download_clean_data <- function(geo_code){
                                               c_resid = "TOTAL",
                                               nace_r2 = "I551-I553",
                                               unit = "NR"
-                               ))
+                               ),
+                               update_cache = update_cache)
   eurostat_tourism <- tour_occ_nim %>%
     dplyr::mutate(time = lubridate::ym(time)) %>%
     dplyr::select(date = time, tourism_nights = values)
